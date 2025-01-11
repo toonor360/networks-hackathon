@@ -32,6 +32,7 @@ def perform_udp_transfer(server_ip, udp_port, file_size):
     received_bytes = 0
     packet_count = 0
     segments_received = 0
+    total_segments_value = 0
 
     while True:
         try:
@@ -43,6 +44,7 @@ def perform_udp_transfer(server_ip, udp_port, file_size):
                 received_bytes += len(data[21:])
                 packet_count += 1
                 segments_received += 1
+                total_segments_value = total_segments
 
             if current_segment + 1 == total_segments:
                 break
@@ -51,7 +53,7 @@ def perform_udp_transfer(server_ip, udp_port, file_size):
 
     elapsed_time = time.time() - start_time
     speed = received_bytes / elapsed_time
-    packets_percent = (segments_received / total_segments) * 100
+    packets_percent = (segments_received / total_segments_value) * 100
 
     print(
         f"[UDP] Transfer finished: {received_bytes} bytes in {elapsed_time:.2f} seconds, Speed: {speed:.2f} bytes/sec, Packets: {packet_count}, Packets received: {packets_percent}%"

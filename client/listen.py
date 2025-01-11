@@ -1,7 +1,7 @@
 import socket
 import struct
 
-from constants import BROADCAST_PORT, OFFER_TYPE, MAGIC_COOKIE
+from utils import BROADCAST_PORT, OFFER_TYPE, MAGIC_COOKIE, print_colored, bcolors
 
 
 def listen_for_offers():
@@ -9,7 +9,7 @@ def listen_for_offers():
     udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     udp_socket.bind(("", BROADCAST_PORT))
     udp_socket.settimeout(1)
-    print("[Client] Listening for server offers...")
+    print_colored(bcolors.OKGREEN, "[Client] Listening for server offers...")
 
     while True:
         try:
@@ -18,8 +18,9 @@ def listen_for_offers():
                 "!I B H H", data[:9]
             )
             if magic_cookie == MAGIC_COOKIE and message_type == OFFER_TYPE:
-                print(
-                    f"[Client] Offer received from {addr[0]}: UDP Port {udp_port}, TCP Port {tcp_port}"
+                print_colored(
+                    bcolors.OKGREEN,
+                    f"[Client] Offer received from {addr[0]}: UDP Port {udp_port}, TCP Port {tcp_port}",
                 )
                 return addr[0], udp_port, tcp_port
         except socket.timeout:

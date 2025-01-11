@@ -2,7 +2,7 @@ import socket
 import threading
 
 from broadcast import start_broadcast_udp_offers
-from constants import TCP_PORT, UDP_PORT
+from utils import TCP_PORT, UDP_PORT, print_colored, bcolors
 from handlers import handle_tcp_client, handle_udp_client
 
 
@@ -13,7 +13,7 @@ def start_server():
     tcp_socket.bind(("", TCP_PORT))
     tcp_socket.settimeout(1)
     tcp_socket.listen()
-    print(f"[TCP] Server listening on port {TCP_PORT}")
+    print_colored(bcolors.OKCYAN, f"[TCP] Server listening on port {TCP_PORT}")
 
     udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
@@ -23,7 +23,7 @@ def start_server():
     while True:
         try:
             client_socket, addr = tcp_socket.accept()
-            print(f"[TCP] Connection from {addr}")
+            print_colored(bcolors.OKCYAN, f"[TCP] Connection from {addr}")
             threading.Thread(
                 target=handle_tcp_client, args=(client_socket,), daemon=True
             ).start()

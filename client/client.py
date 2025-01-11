@@ -1,13 +1,18 @@
 import threading
 
+from utils import print_colored, bcolors
 from handlers import perform_tcp_transfer, perform_udp_transfer
 from listen import listen_for_offers
 
 
 def start_client():
-    file_size = int(input("[Client] Enter file size (in bytes): "))
-    tcp_connections = int(input("[Client] Enter number of TCP connections: "))
-    udp_connections = int(input("[Client] Enter number of UDP connections: "))
+    try:
+        file_size = int(input("[Client] Enter file size (in bytes): "))
+        tcp_connections = int(input("[Client] Enter number of TCP connections: "))
+        udp_connections = int(input("[Client] Enter number of UDP connections: "))
+    except ValueError:
+        print_colored(bcolors.FAIL, "[Client] Invalid input")
+        return
 
     server_ip, udp_port, tcp_port = listen_for_offers()
 
@@ -30,4 +35,4 @@ def start_client():
     for t in tcp_threads + udp_threads:
         t.join()
 
-    print("[Client] All transfers complete!")
+    print_colored(bcolors.OKGREEN, "[Client] All transfers complete!")

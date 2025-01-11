@@ -3,7 +3,7 @@ import socket
 import struct
 import time
 
-from constants import MAGIC_COOKIE, PAYLOAD_TYPE, REQUEST_TYPE
+from utils import MAGIC_COOKIE, PAYLOAD_TYPE, REQUEST_TYPE, print_colored, bcolors
 
 
 def perform_tcp_transfer(server_ip, tcp_port, file_size):
@@ -16,8 +16,9 @@ def perform_tcp_transfer(server_ip, tcp_port, file_size):
     elapsed_time = time.time() - start_time
     speed = len(received_data) / elapsed_time
 
-    print(
-        f"[TCP] Transfer finished: {len(received_data)} bytes in {elapsed_time:.2f} seconds, Speed: {speed:.2f} bytes/sec"
+    print_colored(
+        bcolors.OKCYAN,
+        f"[TCP] Transfer finished: {len(received_data)} bytes in {elapsed_time:.2f} seconds, Speed: {speed:.2f} bytes/sec",
     )
     tcp_socket.close()
 
@@ -55,7 +56,8 @@ def perform_udp_transfer(server_ip, udp_port, file_size):
     speed = received_bytes / elapsed_time
     packets_percent = (segments_received / total_segments_value) * 100
 
-    print(
-        f"[UDP] Transfer finished: {received_bytes} bytes in {elapsed_time:.2f} seconds, Speed: {speed:.2f} bytes/sec, Packets: {packet_count}, Packets received: {packets_percent}%"
+    print_colored(
+        bcolors.OKBLUE,
+        f"[UDP] Transfer finished: {received_bytes} bytes in {elapsed_time:.2f} seconds, Speed: {speed:.2f} bytes/sec, Packets: {packet_count}, Packets received: {packets_percent}%",
     )
     udp_socket.close()

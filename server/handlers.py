@@ -1,6 +1,6 @@
 import socket
 import struct
-from server.utils import (
+from utils import (
     MAGIC_COOKIE,
     REQUEST_TYPE,
     PAYLOAD_TYPE,
@@ -28,7 +28,6 @@ def handle_udp_client(udp_socket: socket.socket):
 
             total_segments = (file_size + DATA_PAYLOAD_SIZE - 1) // DATA_PAYLOAD_SIZE
 
-            print(total_segments)
             for segment in range(total_segments):
                 data_payload = b"X" * min(
                     DATA_PAYLOAD_SIZE, file_size - (segment * DATA_PAYLOAD_SIZE)
